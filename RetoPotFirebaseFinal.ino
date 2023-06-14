@@ -28,7 +28,7 @@ FirebaseConfig config;
 
 unsigned long sendDataPrevMillis = 0;
 // Se guarda el valor de cada potenciometro y posteriormente se definen los pines de la ESP32 donde hay conexiones
-int potentiometerValues[4] = {0}; 
+int potentiometerValues[2] = {0}; 
 
 void setup() {
   Serial.begin(115200);
@@ -38,8 +38,8 @@ void setup() {
 
   pinMode(A4, INPUT);
   pinMode(A5, INPUT);
-  pinMode(A18, INPUT);
-  pinMode(A19, INPUT);
+  //pinMode(A15, INPUT);
+  //pinMode(A14, INPUT);
 }
 
 
@@ -78,28 +78,28 @@ void loop() {
 
     int pot1Value = analogRead(A4);
     int pot2Value = analogRead(A5);
-    int pot3Value = analogRead(A18);
-    int pot4Value = analogRead(A19);
+    //int pot3Value = analogRead(A15);
+    //int pot4Value = analogRead(A14);
 
     potentiometerValues[0] = pot1Value;
     potentiometerValues[1] = pot2Value;
-    potentiometerValues[2] = pot3Value;
-    potentiometerValues[3] = pot4Value;
+    //potentiometerValues[2] = pot3Value;
+    //potentiometerValues[3] = pot4Value;
 
 
     Serial.print("Potentiometer 1: ");
     Serial.println(pot1Value);
     Serial.print("Potentiometer 2: ");
     Serial.println(pot2Value);
-    Serial.print("Potentiometer 3: ");
-    Serial.println(pot3Value);
-    Serial.print("Potentiometer 4: ");
-    Serial.println(pot4Value);
+    //Serial.print("Potentiometer 3: ");
+    //Serial.println(pot3Value);
+    //Serial.print("Potentiometer 4: ");
+    //Serial.println(pot4Value);
 
     // Primero un if que sirve para autenticar el firebase
     if (Firebase.ready()) {
      // Después se iran subiendo los datos por este ciclo for que igualmente usa print y println 
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 2; i++) {
         String path = "potentiometer/pot" + String(i + 1);
         if (Firebase.RTDB.setInt(&fbdo, path.c_str(), potentiometerValues[i])) {
           Serial.println("potentiometers " + String(i + 1) + " value sent successfully");
